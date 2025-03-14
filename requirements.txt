@@ -3,3 +3,6 @@ numpy
 matplotlib
 ucimlrepo
 scikit-learn
+streamlit
+missingno 
+shap
