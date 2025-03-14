@@ -61,10 +61,10 @@ python src/app.py
 - Nom du Contributeur
 
 ## Licence
-Ce projet est sous licence [Nom de la Licence].
+Ce projet est sous licence [Ecole Centrale Casablanca].
 
 ## Contact
-Pour toute question ou suggestion, veuillez contacter [Nom du Contact] à [email@example.com].
+Pour toute question ou suggestion, veuillez contacter [Groupe 24] à [assaletitetresorahimon.don@centrale-casablanca.ma].
 
 ---
 
