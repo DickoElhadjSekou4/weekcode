@@ -1,7 +1,7 @@
 import pandas as pd
 from utils.data_preprocessing import load_and_clean_data
 from models.random_forest import train_model
-from evaluation import evaluate_model
+from models.random_forest import evaluate_model
 from shap_analysis import analyze_shap
 
 # Charger les données
