@@ -14,7 +14,7 @@ X_train, X_test, y_train, y_test = prepa_data(df)
 train_random_forest = train_model(X_train, y_train)
 
 # Évaluer le modèle
-evaluate_model(svm_model, X_test, y_test)
+evaluate_model(model, X_test, y_test)
 
 # Analyse SHAP
 analyze_shap(svm_model, X_train, X_test, feature_names=df.drop(columns=['Biopsy']).columns)
