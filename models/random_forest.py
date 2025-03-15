@@ -1,48 +1,58 @@
-def train_model(X, y):
-    X, y = data_preprocessing()
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
 
-    # Suréchantillonnage avec SMOTE
-    smote = SMOTE(sampling_strategy="auto", random_state=42)
-    X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
 
-    # Initialisation et entraînement du modèle Random Forest
-    clf = RandomForestClassifier(n_estimators=100, random_state=42)
-    clf.fit(X_resampled, y_resampled)
 
-    # Prédictions sur l'ensemble de test
-    y_pred = clf.predict(X_test)
+import shap
+import streamlit as st
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.impute import SimpleImputer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-    # Évaluation du modèle
+
+#  Fonction pour préparer les données pour l'entraînement
+def prepare_data():
+    """Divise les données en X (features) et y (target), puis les sépare en train/test."""
+    df = get_data_cleaned()
+
+    # Définition des features (X) et de la variable cible (y)
+    X = df.drop(columns=["Biopsy"])  # Variable cible = Biopsy
+    y = df["Biopsy"]
+
+    # Division des données en train et test (80% train, 20% test)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    return X_train, X_test, y_train, y_test
+
+# Fonction pour entraîner le modèle Random Forest
+def train_model(X_train, y_train):
+    """Entraîne un Random Forest Classifier sur les données."""
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_train, y_train)
+    return model
+
+# Fonction pour évaluer le modèle
+def evaluate_model(model, X_test, y_test):
+    """Évalue le modèle en affichant la précision et le rapport de classification."""
+    y_pred = model.predict(X_test)
+
     accuracy = accuracy_score(y_test, y_pred)
-    return y_test, y_pred, accuracy, X_test, clf
+    print(f" Accuracy: {accuracy:.4f}")
+    print("\n Classification Report:\n", classification_report(y_test, y_pred))
 
+# Fonction pour expliquer les prédictions avec SHAP
 
-def model(): 
-    # Entraînement du modèle et récupération des résultats
-    y_test, y_pred, accuracy, X_test, clf = train_model()
+def explain_model(model, X_train):
+    """Explique les décisions du modèle avec SHAP."""
+    explainer = shap.Explainer(model, X_train)
+    shap_values = explainer(X_train)
+    # Affichage des features les plus importantes
+    shap.summary_plot(shap_values, X_train)
 
-    # Affichage de l'accuracy en grand
-    st.markdown(f"## 🔹 La Précision du modèle est de  : **{accuracy:.4f}**")
-
-    # Décision à prendre en fonction de la précision
-    
-    if accuracy > 0.85:  # Exemple d'une condition arbitraire pour une bonne précision
-        st.markdown("**Le modèle a une très bonne précision, continuez à suivre les recommandations.**")
-    else:
-        st.markdown("**Précision modérée, veuillez examiner d'autres facteurs avant de prendre une décision.**")
-
-    # Prédiction pour un patient spécifique
-    st.markdown("###  Résultat de la prédiction :")
-
-    # Sélection du patient à analyser
-    patient_index = 0  # Choix de l'index du patient à analyser, ici le premier dans l'ensemble de test
-    patient_data = X_test.iloc[patient_index:patient_index+1]  # Données du patient
-    patient_pred = clf.predict(patient_data)[0]  # Prédiction pour ce patient
-
-    # Affichage du résultat
-    if patient_pred == 1:
-        st.markdown("**Le modèle prédit que le patient est atteint du cancer cervical.** :warning:")
-    else:
-        st.markdown("**Le modèle prédit que le patient n'est pas atteint du cancer cervical.** :white_check_mark:")
-
+# Exécution complète du pipeline 
+X_train, X_test, y_train, y_test = prepare_data()  # Préparation des données
+model = train_model(X_train, y_train)  # Entraînement du modèle
+evaluate_model(model, X_test, y_test)  # Évaluation du modèle
+explain_model(model, X_train)  # Explication avec SHAP
