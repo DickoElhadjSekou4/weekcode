@@ -3,62 +3,29 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
-def load_and_clean_data(file_path):
-    """ Charger et nettoyer les données """
-    df = pd.read_csv(file_path)
-
-    # Convertir les colonnes "object" en nombres
-    for col in df.columns:
-        if df[col].dtype == "object":
-            df[col] = pd.to_numeric(df[col], errors="coerce")
-
-    # Supprimer les colonnes fortement corrélées
-    df.drop(columns=["Smokes (years)", "Hormonal Contraceptives (years)", "IUD (years)", "STDs: Number of diagnosis", "Dx"], inplace=True)
-
-    # Remplacer les valeurs NaN par la médiane
-    df.fillna(df.median(), inplace=True)
-
+def get_data():
+    from sklearn.impute import SimpleImputer
+    cervical_cancer_risk_factors = fetch_ucirepo(id=383) 
+    df = cervical_cancer_risk_factors.data.features 
+    df = df.dropna(thresh=len(df)*0.5, axis=1)
+    # Remplacer les valeurs manquantes restantes par des médianes pour les colonnes numériques
+    imputer = SimpleImputer(strategy="median")
+    df.iloc[:, :] = imputer.fit_transform(df)
     return df
 
-def preprocess_data(df, n_components=5):
-    """ Normalisation et réduction dimensionnelle (PCA) """
-    X = df.drop(columns=['Biopsy'])  
-    y = df['Biopsy']
-
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-
-    pca = PCA(n_components=n_components)
-    X_pca = pca.fit_transform(X_scaled)
-
-    return X_pca, y
-
-def clean_dataset(file_path):
-    """ Charger et nettoyer les données """
-    df = pd.read_csv(file_path)
-    
-    # Convertir les colonnes "object" en nombres
-    for col in df.columns:
-        if df[col].dtype == "object":
-            df[col] = pd.to_numeric(df[col], errors="coerce")
-    
-    # Supprimer les colonnes fortement corrélées
-    df.drop(columns=["Smokes (years)", "Hormonal Contraceptives (years)", "IUD (years)", "STDs: Number of diagnosis", "Dx"], inplace=True)
-    
-    # Remplacer les valeurs NaN par la médiane
-    df.fillna(df.median(), inplace=True)
-    
+def get_data_origninal():
+    df=get_data()
+    cols_to_drop = ["Smokes (years)", "Hormonal Contraceptives (years)", "IUD (years)", "STDs: Number of diagnosis", "Dx"]
+    df= df.drop(columns=[col for col in cols_to_drop if col in df.columns])
     return df
 
-def transform_data(df):
-    """ Normalisation et réduction de dimension des données """
-    X = df.drop(columns=['Biopsy'])  
-    y = df['Biopsy']
+def load_and_clean_data():
+    df= get_data()
+    df=get_data_original()
+    return df
+
+
+   
+
+
     
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-    
-    pca = PCA(n_components=5)
-    X_pca = pca.fit_transform(X_scaled)
-    
-    return train_test_split(X_pca, y, test_size=0.2, random_state=42)
