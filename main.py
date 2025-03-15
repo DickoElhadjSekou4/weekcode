@@ -1,54 +1,20 @@
-import pandas as pd #pandas est une bibliothèque utilisée pour manipuler des données sous forme de tableaux (DataFrame).
-import matplotlib.pyplot as plt
-import seaborn as sns
-from src.dataloader import get_downloaded_dataset
+import pandas as pd
+from utils.data_preprocessing import load_and_clean_data, preprocess_data
+from models_model import train_svm
+from evaluation import evaluate_model
+from shap_analysis import analyze_shap
 
-df = get_downloaded_dataset()
+# Charger les données
+df = load_and_clean_data(r"C:\Users\pc gold\Downloads\risk_factors_cervical_cancer.csv")
 
-print('Afficher les informations générales sur le dataset')
-print(df.info())
-print('Convertir les colonnes object en nombres (ignorer les erreurs)')
-for col in df.columns:
-    if df[col].dtype == "object":
-        df[col] = pd.to_numeric(df[col], errors="coerce")
+# Prétraiter les données
+X_train, X_test, y_train, y_test = preprocess_data(df)
 
-print('Vérifier si la conversion a fonctionné')
+# Entraîner le modèle
+svm_model = train_svm(X_train, y_train)
 
-print(df.dtypes)
-print(df.isnull().sum())# donne les nombre de NAN pqr colone 
+# Évaluer le modèle
+evaluate_model(svm_model, X_test, y_test)
 
-df.drop(columns=["STDs: Time since first diagnosis", "STDs: Time since last diagnosis"], inplace=True) #Suppri,er les colones qui ont beaucoup de NAN
-df.fillna(df.median(), inplace=True)
-print('Vérifie sil reste des NaN')
-print(df.isnull().sum())  
-print('Vérifie les types de données')
-print(df.info())  
-print('  Vérifie les statistiques des colonne')
-print(df.describe())
-# Histogramme de l'âge
-plt.figure(figsize=(16, 15))
-sns.histplot(df['Age'], bins=20, kde=True, color='blue')
-plt.title("Distribution de l'Âge")
-plt.xlabel("Âge")
-plt.ylabel("Nombre de personnes")
-plt.show()
-
-# Heatmap des corrélations
-plt.figure(figsize=(16, 15))
-sns.heatmap(df.corr(), annot=True, cmap="coolwarm", linewidths=0.5)
-plt.title("Matrice de Corrélation")
-plt.show()
-
-# Boxplot du nombre de partenaires sexuels
-plt.figure(figsize=(12, 11))
-sns.boxplot(x=df['Number of sexual partners'])
-plt.title("Boxplot - Nombre de partenaires sexuels")
-plt.show()
-
-# Nuage de points entre l'âge et le nombre de partenaires sexuels
-plt.figure(figsize=(15, 13))
-sns.scatterplot(x=df['Age'], y=df['Number of sexual partners'], alpha=0.5)
-plt.title("Relation entre l'âge et le nombre de partenaires sexuels")
-plt.xlabel("Âge")
-plt.ylabel("Nombre de partenaires sexuels")
-plt.show()
+# Analyse SHAP
+analyze_shap(svm_model, X_train, X_test, feature_names=df.drop(columns=['Biopsy']).columns)

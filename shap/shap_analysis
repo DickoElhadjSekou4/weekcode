@@ -1,0 +1,10 @@
+import shap
+import matplotlib.pyplot as plt
+
+def analyze_shap(model, X_train, X_test, feature_names):
+    """ Analyse et visualisation SHAP """
+    explainer = shap.Explainer(model, X_train)
+    shap_values = explainer(X_test)
+    
+    # Graphique SHAP récapitulatif
+    shap.summary_plot(shap_values.values, X_test, feature_names=feature_names)
