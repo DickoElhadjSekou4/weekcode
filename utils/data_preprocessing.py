@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
+from ucimlrepo import fetch_ucirepo
 
 def get_data():
     from sklearn.impute import SimpleImputer
