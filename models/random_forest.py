@@ -1,0 +1,41 @@
+import shap
+import streamlit as st
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.impute import SimpleImputer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+# Fonction pour entraîner le modèle Random Forest
+def train_model(X_train, y_train):
+    """Entraîne un Random Forest Classifier sur les données."""
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_train, y_train)
+    return model
+
+# Fonction pour évaluer le modèle
+def evaluate_model(model, X_test, y_test):
+    """Évalue le modèle en affichant la précision et le rapport de classification."""
+    y_pred = model.predict(X_test)
+
+    accuracy = accuracy_score(y_test, y_pred)
+    print(f" Accuracy: {accuracy:.4f}")
+    print("\n Classification Report:\n", classification_report(y_test, y_pred))
+
+# Fonction pour expliquer les prédictions avec SHAP
+
+def explain_model(model, X_train):
+    """Explique les décisions du modèle avec SHAP."""
+    explainer = shap.Explainer(model, X_train)
+    shap_values = explainer(X_train)
+    # Affichage des features les plus importantes
+    shap.summary_plot(shap_values, X_train)
+
+# Exécution complète du pipeline 
+X_train, X_test, y_train, y_test = prepare_data()  # Préparation des données
+model = train_model(X_train, y_train)  # Entraînement du modèle
+evaluate_model(model, X_test, y_test)  # Évaluation du modèle
+explain_model(model, X_train)  # Explication avec SHAP

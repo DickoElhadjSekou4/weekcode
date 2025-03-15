@@ -5,7 +5,7 @@ from evaluation import evaluate_model
 from shap_analysis import analyze_shap
 
 # Charger les données
-df = load_and_clean_data(r"C:\Users\pc gold\Downloads\risk_factors_cervical_cancer.csv")
+df = load_and_clean_data()
 
 # Prétraiter les données
 X_train, X_test, y_train, y_test = preprocess_data(df)
