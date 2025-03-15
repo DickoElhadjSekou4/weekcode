@@ -8,7 +8,7 @@ from shap_analysis import analyze_shap
 df = load_and_clean_data()
 
 # Prétraiter les données
-X_train, X_test, y_train, y_test = preprocess_data(df)
+X_train, X_test, y_train, y_test = prepa_data(df)
 
 # Entraîner le modèle
 train_random_forest = train_model(X_train, y_train)
