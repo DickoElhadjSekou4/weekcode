@@ -13,7 +13,7 @@ import seaborn as sns
 #  Fonction pour préparer les données pour l'entraînement
 def prepare_data():
     """Divise les données en X (features) et y (target), puis les sépare en train/test."""
-    df = 
+    df = load_and_clean_data()
 
     # Définition des features (X) et de la variable cible (y)
     X = df.drop(columns=["Biopsy"])  # Variable cible = Biopsy
