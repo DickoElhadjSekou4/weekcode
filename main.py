@@ -1,6 +1,6 @@
 import pandas as pd
 from utils.data_preprocessing import load_and_clean_data, preprocess_data
-from models_model import train_svm
+from models.random_forest import train_model
 from evaluation import evaluate_model
 from shap_analysis import analyze_shap
 
