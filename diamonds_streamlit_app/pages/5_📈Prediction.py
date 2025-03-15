@@ -52,6 +52,7 @@ def train_model():
 ######################## Modélisation et prédiction pour le docteur ########################
 
 def model():
+def model(): 
     # Entraînement du modèle et récupération des résultats
     y_test, y_pred, accuracy, X_test, clf = train_model()
 
