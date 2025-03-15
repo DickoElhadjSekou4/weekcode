@@ -9,20 +9,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-#  Fonction pour préparer les données pour l'entraînement
-def prepare_data():
-    """Divise les données en X (features) et y (target), puis les sépare en train/test."""
-    df = load_and_clean_data()
-
-    # Définition des features (X) et de la variable cible (y)
-    X = df.drop(columns=["Biopsy"])  # Variable cible = Biopsy
-    y = df["Biopsy"]
-
-    # Division des données en train et test (80% train, 20% test)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    return X_train, X_test, y_train, y_test
-
 # Fonction pour entraîner le modèle Random Forest
 def train_model(X_train, y_train):
     """Entraîne un Random Forest Classifier sur les données."""
