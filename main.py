@@ -2,7 +2,7 @@ import pandas as pd
 from utils.data_preprocessing import load_and_clean_data
 from models.random_forest import train_model
 from models.random_forest import evaluate_model
-from shap_analysis import analyze_shap
+from models.random_forest import explain_model
 
 # Charger les données
 df = load_and_clean_data()
@@ -17,4 +17,4 @@ train_random_forest = train_model(X_train, y_train)
 evaluate_model(model, X_test, y_test)
 
 # Analyse SHAP
-analyze_shap(svm_model, X_train, X_test, feature_names=df.drop(columns=['Biopsy']).columns)
+explain_model(model, X_train)
