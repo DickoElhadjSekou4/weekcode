@@ -101,6 +101,8 @@ D'après l'analyse SHAP, les facteurs ayant le plus d'impact sur la prédiction 
 •	Antécédents d'IST (Infections Sexuellement Transmissibles)
 •	Utilisation de contraceptifs hormonaux
 •	Âge du premier rapport sexuel
+l’ingénierie rapide est celle aui nous a per,it de faire tout le netoyage de donner c'est à dire la Conversion des variables non numériques en valeurs numériques.
+Remplacement des valeurs manquantes par la médiane pour éviter les biais.Suppression des colonnes fortement corrélées pour éviter la redondance, l'application d’un class_weight pour donner plus d’importance à la classe minoritaire et améliorer la détection des cas positif et également l'utilisation de SHAP, qui nous a permis d'identifié les variables ayant le plus d’impact sur les prédictions, ce qui a permis d’affiner le modèle et d’améliorer ses performances.Ce travail est crucial, car même le meilleur modèle ne donnera pas de bons résultats si les données sont mal préparées.
 
 Installation
 1.	Clonez le projet :
@@ -117,3 +119,8 @@ Résultats & Visualisation
 •	Matrice de confusion
 •	Courbe ROC-AUC
 •	Importance des variables (Feature Importance)
+Mendre du Groupe :
+DICKO ELHADJ SEKOU
+DON TITO TRESOR
+SAADOUI HELMI
+MEITE SAID AYMAN
