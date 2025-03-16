@@ -14,7 +14,11 @@ def evaluate_model(model, X_test, y_test):
     """ Évaluer le modèle avec les métriques courantes """
     y_pred = model.predict(X_test)
 
+
     print(" Rapport de classification :\n", classification_report(y_test, y_pred))
+
+    print("Rapport de classification :\n", classification_report(y_test, y_pred))
+
     print(f" Précision du modèle : {accuracy_score(y_test, y_pred):.2f}")
     print(f" ROC-AUC Score : {roc_auc_score(y_test, y_pred):.2f}")
 
