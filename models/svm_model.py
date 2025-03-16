@@ -14,9 +14,9 @@ def evaluate_model(model, X_test, y_test):
     """ Évaluer le modèle avec les métriques courantes """
     y_pred = model.predict(X_test)
 
-    print("📊 Rapport de classification :\n", classification_report(y_test, y_pred))
-    print(f"📈 Précision du modèle : {accuracy_score(y_test, y_pred):.2f}")
-    print(f"🔹 ROC-AUC Score : {roc_auc_score(y_test, y_pred):.2f}")
+    print("Rapport de classification :\n", classification_report(y_test, y_pred))
+    print(f" Précision du modèle : {accuracy_score(y_test, y_pred):.2f}")
+    print(f" ROC-AUC Score : {roc_auc_score(y_test, y_pred):.2f}")
 
     cm = confusion_matrix(y_test, y_pred)
     plt.figure(figsize=(6, 5))
@@ -30,7 +30,7 @@ def save_model(model, path="models/svm_model.pkl"):
     """ Sauvegarder le modèle """
     with open(path, "wb") as f:
         pickle.dump(model, f)
-    print(f"✅ Modèle sauvegardé sous {path}")
+    print(f" Modèle sauvegardé sous {path}")
 
 def load_model(path="models/svm_model.pkl"):
     """ Charger un modèle sauvegardé """
