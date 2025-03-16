@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
-from xgboost import XGBClassifier
+from catboost import CatBoostClassifier
 from sklearn.metrics import accuracy_score, classification_report
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -21,10 +21,10 @@ def prepare_data():
 
     return X_train, X_test, y_train, y_test
     
-# Fonction pour entraîner le modèle XGBoost
+# Fonction pour entraîner le modèle CatBoost
 def train_model(X_train, y_train):
-    """Entraîne un XGBClassifier sur les données."""
-    model = XGBClassifier(n_estimators=100, random_state=42)
+    """Entraîne un CatBoost Classifier sur les données."""
+    model = CatBoostClassifier(iterations=100, random_state=42, verbose=0)
     model.fit(X_train, y_train)
     return model
 
