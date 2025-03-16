@@ -3,6 +3,14 @@ Prédiction du Cancer du Col de l'Utérus avec Machine Learning
     Description du Projet
 Ce projet vise à prédire la présence d'un cancer du col de l'utérus à partir d'un ensemble de facteurs de risque en utilisant plusieurs modèles de Machine Learning. Nous avons comparé différentes approches afin d'identifier le modèle offrant les meilleures performances.
 
+ Optimisation de l'utilisation de la mémoire : Pour l'optimisation de la memoire nous avons utiliser comme indiquer sur la fiche du projet une fonction optimize_memory aue nous avons appliqués aux dataset après l'avoir extrait ; 
+ Nous obtenons:
+ Utilisation mémoire avant optimisation :
+1222985 octets
+ Utilisation mémoire après optimisation :
+1162925 octets
+L’optimisation de la mémoire a permis de réduire l’utilisation de 1 005 060 octets à 962 180 octets, soit une réduction d’environ 5%.
+
 Prétraitement des Données
 •	Conversion des valeurs non numériques en nombres.
 •	Suppression des colonnes fortement corrélées.

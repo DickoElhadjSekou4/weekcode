@@ -1,16 +1,6 @@
 import pandas as pd
 
 def optimize_memory(df):
-    """
-    Optimise l'utilisation mémoire d'un DataFrame Pandas en réduisant 
-    la taille des types de données numériques.
-    
-    Paramètre :
-    df : pd.DataFrame - Le DataFrame contenant les données à optimiser.
-    
-    Retourne :
-    df : pd.DataFrame - Le DataFrame optimisé en mémoire.
-    """
     
     for col in df.columns:  # Parcours toutes les colonnes du DataFrame
         col_type = df[col].dtype  # Récupère le type de la colonne
@@ -18,11 +8,9 @@ def optimize_memory(df):
         # Optimisation des entiers (int64 → int32 ou plus petit)
         if col_type == 'int64':
             df[col] = pd.to_numeric(df[col], downcast='integer')  
-            # downcast='integer' choisit automatiquement le type d'entier le plus petit possible
         
         # Optimisation des flottants (float64 → float32)
         elif col_type == 'float64':
             df[col] = pd.to_numeric(df[col], downcast='float')  
-            # downcast='float' réduit la taille des nombres flottants à float32 si possible
 
     return df  # Retourne le DataFrame optimisé
